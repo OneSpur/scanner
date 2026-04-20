@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SpecDrift Debug</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #09090b; color: #e4e4e7; }
+        .test { margin: 20px 0; padding: 15px; background: #111113; border: 1px solid #27272a; border-radius: 8px; }
+        button { padding: 10px 20px; background: #6366f1; color: white; border: none; border-radius: 6px; cursor: pointer; }
+        .log { background: #0a0a0c; padding: 10px; margin-top: 10px; border-radius: 4px; font-size: 12px; }
+        .success { color: #4ade80; }
+        .error { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <h1>SpecDrift Debug Page</h1>
+    
+    <div class="test">
+        <h3>Test 1: Check localStorage</h3>
+        <button onclick="checkLocalStorage()">Check localStorage</button>
+        <div id="localStorage-result" class="log"></div>
+    </div>
+    
+    <div class="test">
+        <h3>Test 2: Test submitAuto function</h3>
+        <button onclick="testSubmitAuto()">Test submitAuto()</button>
+        <div id="submitAuto-result" class="log"></div>
+    </div>
+    
+    <div class="test">
+        <h3>Test 3: Check if button is clickable</h3>
+        <button onclick="testButtonClick()">Test Button Click</button>
+        <div id="button-result" class="log"></div>
+    </div>
+    
+    <div class="test">
+        <h3>Test 4: Set test data and submit</h3>
+        <button onclick="setTestDataAndSubmit()">Set Test Data & Submit</button>
+        <div id="test-submit-result" class="log"></div>
+    </div>
+
+    <script>
+        function log(elementId, message, isError = false) {
+            const el = document.getElementById(elementId);
+            el.innerHTML += `<div class="${isError ? 'error' : 'success'}">${message}</div>`;
+        }
+        
+        function checkLocalStorage() {
+            const result = document.getElementById('localStorage-result');
+            result.innerHTML = '';
+            
+            const keys = ['sd_repo_url', 'sd_gh_token', 'sd_gl_token', 'sd_provider', 'sd_model', 'sd_window'];
+            keys.forEach(key => {
+                const value = localStorage.getItem(key);
+                log('localStorage-result', `${key}: ${value || '(not set)'}`);
+            });
+        }
+        
+        function testSubmitAuto() {
+            const result = document.getElementById('submitAuto-result');
+            result.innerHTML = '';
+            
+            try {
+                log('submitAuto-result', 'Checking if submitAuto exists...');
+                if (typeof submitAuto === 'function') {
+                    log('submitAuto-result', '✓ submitAuto function exists');
+                } else {
+                    log('submitAuto-result', '✗ submitAuto function NOT found', true);
+                }
+            } catch (e) {
+                log('submitAuto-result', `Error: ${e.message}`, true);
+            }
+        }
+        
+        function testButtonClick() {
+            const result = document.getElementById('button-result');
+            result.innerHTML = '';
+            
+            // Try to find the button on the main page
+            const btn = window.opener ? window.opener.document.querySelector('.auto-analyse-btn') : null;
+            if (btn) {
+                log('button-result', '✓ Found button on main page');
+                log('button-result', `Button onclick: ${btn.getAttribute('onclick')}`);
+                log('button-result', `Button disabled: ${btn.disabled}`);
+                log('button-result', `Button pointer-events: ${window.getComputedStyle(btn).pointerEvents}`);
+                
+                const parent = btn.closest('.step-block');
+                if (parent) {
+                    log('button-result', `Parent has step-locked: ${parent.classList.contains('step-locked')}`);
+                    log('button-result', `Parent pointer-events: ${window.getComputedStyle(parent).pointerEvents}`);
+                }
+            } else {
+                log('button-result', 'Open this page from the main SpecDrift page', true);
+            }
+        }
+        
+        function setTestDataAndSubmit() {
+            const result = document.getElementById('test-submit-result');
+            result.innerHTML = '';
+            
+            log('test-submit-result', 'Setting test data in localStorage...');
+            localStorage.setItem('sd_repo_url', 'https://github.com/django/django');
+            localStorage.setItem('sd_gh_token', 'test_token');
+            localStorage.setItem('sd_provider', 'claude-code');
+            localStorage.setItem('sd_model', 'claude-sonnet-4-6');
+            localStorage.setItem('sd_window', '90');
+            
+            log('test-submit-result', '✓ Test data set');
+            log('test-submit-result', 'Now go back to the main page and try clicking Analyse');
+            log('test-submit-result', 'Open browser console (F12) to see debug logs');
+        }
+    </script>
+</body>
+</html>

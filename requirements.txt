@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+requests
+httpx
+anthropic
+questionary
+rich
+pypdf

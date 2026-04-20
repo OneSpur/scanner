@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>1Spur Scanner by 1spur AI</title>
+<link rel="icon" type="image/svg+xml" href="/static/icon.svg"/>
+<link rel="stylesheet" href="/static/analyzing.css"/>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo"><span style="color:#fff">Spec<span style="color:#6366f1">Drift</span></span> <a href="https://1spur.com" target="_blank" style="font-weight:300;color:#3f3f46;font-size:9px;letter-spacing:0.3px;text-decoration:none">by 1spur AI</a></div>
+
+  <div class="repo" id="repo-name">{{ repo_url.split('github.com/')[-1] }}</div>
+  <div class="subtitle">Running analysis: <span id="eta-label" style="font-family:monospace;font-size:13px;color:#52525b;letter-spacing:0.2px;">0s</span></div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-label" id="progress-label">Starting...</div>
+  </div>
+
+  <div class="steps">
+    <div class="step" id="step-1">
+      <div class="step-icon" id="icon-1">1</div>
+      <div class="step-body">
+        <div class="step-title" id="title-1">Connecting to GitHub</div>
+        <div class="step-detail" id="detail-1">Fetching issues, PRs and commits...</div>
+      </div>
+    </div>
+    <div class="step" id="step-2">
+      <div class="step-icon" id="icon-2">2</div>
+      <div class="step-body">
+        <div class="step-title" id="title-2">Running drift analysis</div>
+        <div class="step-detail" id="detail-2">Rule-based + AI analysis</div>
+      </div>
+    </div>
+    <div class="step" id="step-3">
+      <div class="step-icon" id="icon-3">3</div>
+      <div class="step-body">
+        <div class="step-title" id="title-3">Generating report</div>
+        <div class="step-detail" id="detail-3">Building your results page</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="log" id="log"></div>
+  <div class="error-box" id="error-box" style="display:none"></div>
+</div>
+
+<script>window.__JOB_ID__ = "{{ job_id }}";</script>
+<script src="/static/analyzing.js"></script>
+</body>
+</html>

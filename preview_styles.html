@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DRIFT vs GAP Preview</title>
+<style>
+  body { background: #09090b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 32px; margin: 0; }
+  h2 { color: #71717a; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin: 0 0 16px; }
+</style>
+</head>
+<body>
+
+<h2>Expectation · Finding · When Found</h2>
+
+<table style="width:100%;border-collapse:collapse;background:#0d0d0f;border:1px solid #1f1f23;border-radius:12px;overflow:hidden;">
+  <thead>
+    <tr style="background:#111113;border-bottom:1px solid #1f1f23;">
+      <th style="padding:10px 16px;text-align:left;font-size:10px;font-weight:700;color:#3f3f46;letter-spacing:0.7px;text-transform:uppercase;width:36%;">Expectation</th>
+      <th style="padding:10px 16px;text-align:left;font-size:10px;font-weight:700;color:#3f3f46;letter-spacing:0.7px;text-transform:uppercase;width:40%;border-left:1px solid #1a1a1e;">Finding</th>
+      <th style="padding:10px 14px;text-align:left;font-size:10px;font-weight:700;color:#3f3f46;letter-spacing:0.7px;text-transform:uppercase;width:24%;border-left:1px solid #1a1a1e;">When Found</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- ISSUE HEADER -->
+    <tr>
+      <td colspan="4" style="padding:10px 16px;background:#111113;border-top:2px solid #7f1d1d;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.8px;color:#ef4444;background:#1c0a0a;border:1px solid #7f1d1d;border-radius:4px;padding:2px 7px;">DRIFT</span>
+          <span style="font-size:10px;font-weight:600;color:#ef4444;text-transform:uppercase;letter-spacing:0.4px;">HIGH</span>
+          <span style="font-size:13px;font-weight:600;color:#e4e4e7;">#25 Short link generation and resolution</span>
+          <span style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+            <span style="color:#f59e0b;font-size:11px;">not detected in review</span>
+            <span style="color:#27272a">·</span>
+            <span style="font-size:11px;color:#52525b;">PR #8</span>
+            <span style="color:#27272a">·</span>
+            <span style="font-size:11px;color:#3f3f46;">@VKapicyn</span>
+          </span>
+        </div>
+      </td>
+    </tr>
+
+    <!-- DRIFT FINDING ROW -->
+    <tr style="border-top:1px solid #1a1a1e;">
+      <td style="padding:14px 16px;vertical-align:top;border-right:1px solid #1a1a1e;width:36%;border-left:3px solid #ef4444;background:#120a0a;">
+        <div style="margin-bottom:7px;">
+          <span style="display:inline-flex;align-items:center;gap:5px;background:#2d0a0a;border:1px solid #ef444444;border-radius:4px;padding:2px 8px;margin-right:6px;">
+            <span style="font-size:9px;font-weight:800;letter-spacing:0.8px;color:#ef4444;">DRIFT</span>
+            <span style="font-size:9px;color:#ef444499;">contradicts spec</span>
+          </span>
+          <span style="font-size:9px;color:#ef4444;text-transform:uppercase;font-weight:600;letter-spacing:0.4px;">HIGH</span>
+        </div>
+        <div style="font-size:13px;color:#e4e4e7;line-height:1.65;">Implement redirect endpoint GET /p/:shortCode → resolve to poll voting page</div>
+        <div style="margin-top:7px;font-size:11px;color:#3f3f46;font-style:italic;border-left:2px solid #27272a;padding-left:8px;line-height:1.5;">&ldquo;GET /p/:shortCode → resolve to poll voting page&rdquo;</div>
+      </td>
+      <td style="padding:14px 16px;vertical-align:top;border-right:1px solid #1a1a1e;width:40%;">
+        <div style="font-size:13px;color:#a1a1aa;line-height:1.65;">Implements endpoint at /api/polls/resolve/:shortCode instead — wrong path, returns JSON not a redirect</div>
+        <pre style="margin-top:10px;font-size:11px;font-family:monospace;background:#0a0a0c;border:1px solid #1f1f23;border-radius:6px;padding:10px 12px;color:#71717a;overflow-x:auto;white-space:pre-wrap;word-break:break-all;line-height:1.6;">router.get('/resolve/:shortCode', async (req, res) => {
+  const poll = await db('polls').where({ short_code: req.params.shortCode }).first();</pre>
+        <a href="#" style="margin-top:8px;display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#6366f1;font-family:monospace;background:#09090b;padding:4px 9px;border-radius:5px;text-decoration:none;">&#128279; server/src/routes/polls.ts:149</a>
+      </td>
+      <td style="padding:14px 14px;vertical-align:top;width:24%;">
+        <div style="font-size:13px;color:#ef4444;font-weight:700;">Not yet fixed</div>
+        <div style="font-size:11px;color:#52525b;margin-top:5px;">Unresolved since 96h ago</div>
+      </td>
+    </tr>
+
+    <!-- ISSUE HEADER GAP -->
+    <tr>
+      <td colspan="4" style="padding:10px 16px;background:#111113;border-top:2px solid #1e3a5f;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:10px;font-weight:700;letter-spacing:0.8px;color:#60a5fa;background:#0d0f1a;border:1px solid #1e3a5f;border-radius:4px;padding:2px 7px;">GAP</span>
+          <span style="font-size:10px;font-weight:600;color:#ef4444;text-transform:uppercase;letter-spacing:0.4px;">HIGH</span>
+          <span style="font-size:13px;font-weight:600;color:#e4e4e7;">#14 Email notifications</span>
+          <span style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+            <span style="color:#f59e0b;font-size:11px;">not detected in review</span>
+            <span style="color:#27272a">·</span>
+            <span style="font-size:11px;color:#52525b;">PR #12</span>
+            <span style="color:#27272a">·</span>
+            <span style="font-size:11px;color:#3f3f46;">@VKapicyn</span>
+          </span>
+        </div>
+      </td>
+    </tr>
+
+    <!-- GAP FINDING ROW -->
+    <tr style="border-top:1px solid #1a1a1e;">
+      <td style="padding:14px 16px;vertical-align:top;border-right:1px solid #1a1a1e;width:36%;border-left:3px solid #3b82f6;background:#0a0e18;">
+        <div style="margin-bottom:7px;">
+          <span style="display:inline-flex;align-items:center;gap:5px;background:#0a1628;border:1px solid #3b82f644;border-radius:4px;padding:2px 8px;margin-right:6px;">
+            <span style="font-size:9px;font-weight:800;letter-spacing:0.8px;color:#60a5fa;">GAP</span>
+            <span style="font-size:9px;color:#60a5fa99;">missing from code</span>
+          </span>
+          <span style="font-size:9px;color:#ef4444;text-transform:uppercase;font-weight:600;letter-spacing:0.4px;">HIGH</span>
+        </div>
+        <div style="font-size:13px;color:#e4e4e7;line-height:1.65;">Send emails via transactional email service (SendGrid, Postmark) with abstraction layer. Use Bull queue for async sending.</div>
+        <div style="margin-top:7px;font-size:11px;color:#3f3f46;font-style:italic;border-left:2px solid #27272a;padding-left:8px;line-height:1.5;">&ldquo;Send emails via a transactional email service&rdquo;</div>
+      </td>
+      <td style="padding:14px 16px;vertical-align:top;border-right:1px solid #1a1a1e;width:40%;">
+        <div style="font-size:13px;color:#a1a1aa;line-height:1.65;">Diff shows admin panel and test code only. No email service integration, job queue setup, or notification handlers present.</div>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="#" style="font-size:11px;color:#6366f1;background:#09090b;padding:4px 9px;border-radius:5px;text-decoration:underline;text-underline-offset:2px;">&#128279; issue #14</a>
+          <a href="#" style="font-size:11px;color:#6366f1;background:#09090b;padding:4px 9px;border-radius:5px;text-decoration:underline;text-underline-offset:2px;">&#128279; PR #12</a>
+        </div>
+      </td>
+      <td style="padding:14px 14px;vertical-align:top;width:24%;">
+        <div style="font-size:13px;color:#ef4444;font-weight:700;">Not yet fixed</div>
+        <div style="font-size:11px;color:#52525b;margin-top:5px;">Unresolved since 96h ago</div>
+      </td>
+    </tr>
+
+    <!-- DRIFT MEDIUM ROW - second example -->
+    <tr style="border-top:1px solid #1a1a1e;">
+      <td style="padding:14px 16px;vertical-align:top;border-right:1px solid #1a1a1e;width:36%;border-left:3px solid #ef4444;background:#120a0a;">
+        <div style="margin-bottom:7px;">
+          <span style="display:inline-flex;align-items:center;gap:5px;background:#2d0a0a;border:1px solid #ef444444;border-radius:4px;padding:2px 8px;margin-right:6px;">
+            <span style="font-size:9px;font-weight:800;letter-spacing:0.8px;color:#ef4444;">DRIFT</span>
+            <span style="font-size:9px;color:#ef444499;">contradicts spec</span>
+          </span>
+          <span style="font-size:9px;color:#f59e0b;text-transform:uppercase;font-weight:600;letter-spacing:0.4px;">MEDIUM</span>
+        </div>
+        <div style="font-size:13px;color:#e4e4e7;line-height:1.65;">Slack requirement: 'we need to rename the explore page — maybe something like look into page'</div>
+        <div style="margin-top:7px;font-size:11px;color:#3f3f46;font-style:italic;border-left:2px solid #27272a;padding-left:8px;line-height:1.5;">&ldquo;we need to rename the explore page for Quickpoll&rdquo;</div>
+        <div style="margin-top:8px;">
+          <a href="#" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#4a154b;background:#f4ede4;border-radius:4px;padding:2px 7px;text-decoration:none;font-weight:500;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>
+            View in Slack
+          </a>
+        </div>
+      </td>
+      <td style="padding:14px 16px;vertical-align:top;border-right:1px solid #1a1a1e;width:40%;">
+        <div style="font-size:13px;color:#a1a1aa;line-height:1.65;">Explore page route and component remain with original 'Explore' name, not renamed</div>
+        <a href="#" style="margin-top:8px;display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#6366f1;font-family:monospace;background:#09090b;padding:4px 9px;border-radius:5px;text-decoration:none;">&#128279; client/src/App.tsx:28</a>
+      </td>
+      <td style="padding:14px 14px;vertical-align:top;width:24%;">
+        <div style="font-size:13px;color:#ef4444;font-weight:700;">Not yet fixed</div>
+        <div style="font-size:11px;color:#52525b;margin-top:5px;">Unresolved since 96h ago</div>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+</body>
+</html>

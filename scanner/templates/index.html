@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>1Spur Scanner by 1spur AI</title>
+<link rel="icon" type="image/svg+xml" href="/static/icon.svg"/>
+<link rel="stylesheet" href="/static/index.css?v=18"/>
+</head>
+<body>
+<div class="page">
+
+  <div class="logo"><a href="https://1spur.com" target="_blank" class="logo-link">1Spur</a> <span class="logo-name"><span>Scanner</span></span></div>
+
+  <div class="hero">
+    <div class="hero-title">Is your code still doing what the spec says?</div>
+    <div class="hero-sub">Connect your repo and issue tracker. 1Spur Scanner finds where implementation diverged from the original requirements.</div>
+  </div>
+
+  <div class="mode-cards">
+    <button type="button" class="mode-card active" id="mode-card-auto" onclick="selectMode('auto')">
+      <div class="mode-card-title">Auto</div>
+      <div class="mode-card-desc">Sign in with one click. Connect GitHub, Jira and Slack using OAuth. No tokens needed.</div>
+    </button>
+    <button type="button" class="mode-card" id="mode-card-manual" onclick="selectMode('manual')">
+      <div class="mode-card-title">Manual</div>
+      <div class="mode-card-desc">Paste your API tokens directly. Full control, works with any private setup.</div>
+    </button>
+  </div>
+
+  <!-- ── AUTO-MODE (default) ───────────────────────────────────────── -->
+  <div id="auto-panel">
+
+    <!-- Step 1: Connect your tools -->
+    <div class="step-block" id="step1-block">
+      <div class="step-header">
+        <span class="step-num" id="step1-num">1</span>
+        <div class="step-header-body">
+          <span class="step-title">Connect your tools</span>
+        </div>
+      </div>
+
+      <div class="service-section-label">Code host <span class="label-required">· required</span></div>
+      <div class="service-grid">
+
+        <div class="service-card" id="tile-github">
+          <div class="service-card-top">
+            <div class="service-card-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" fill="currentColor"/></svg>
+            </div>
+            <div class="service-card-body">
+              <div class="service-card-name">GitHub</div>
+              <div class="service-card-desc">PRs, commits &amp; issues</div>
+            </div>
+          </div>
+          <button type="button" class="connect-btn" id="connect-btn-github" onclick="connectService('github')">Connect →</button>
+          <!-- Repo picker — disabled until GitHub is connected -->
+          <div class="channel-picker" id="github-repo-picker">
+            <div class="repo-picker-wrap">
+              <input type="text" id="auto-repo-input" class="repo-input" placeholder="Paste URL or search…" autocomplete="off" spellcheck="false" disabled
+                oninput="onRepoInput(this.value)" onfocus="onRepoFocus()"/>
+              <ul class="repo-dropdown" id="repo-dropdown"></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card" id="tile-gitlab">
+          <div class="service-card-top">
+            <div class="service-card-icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.955 13.587l-1.342-4.135-2.664-8.189a.455.455 0 0 0-.867 0L16.418 9.45H7.582L4.918 1.263a.455.455 0 0 0-.867 0L1.386 9.45.044 13.587a.924.924 0 0 0 .331 1.023L12 23.054l11.625-8.444a.92.92 0 0 0 .33-1.023" fill="currentColor"/></svg>
+            </div>
+            <div class="service-card-body">
+              <div class="service-card-name">GitLab</div>
+              <div class="service-card-desc">MRs, commits &amp; issues</div>
+            </div>
+          </div>
+          <button type="button" class="connect-btn" id="connect-btn-gitlab" onclick="connectService('gitlab')">Connect →</button>
+          <!-- Repo picker — disabled until GitLab is connected -->
+          <div class="channel-picker" id="gitlab-repo-picker">
+            <input type="text" id="auto-repo-input-gl" class="repo-input" placeholder="Paste GitLab URL…" autocomplete="off" spellcheck="false" disabled
+              oninput="onRepoInput(this.value)"/>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="optional-services-content">
+
+          <div class="service-section-label">Issue tracker</div>
+          <div class="service-grid">
+
+            <div class="service-card" id="tile-jira">
+              <div class="service-card-top">
+                <div class="service-card-icon">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 0-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 0 0 5.215 5.214h2.129v2.058a5.218 5.218 0 0 0 5.215 5.214V6.758a1.001 1.001 0 0 0-1.001-1.001ZM23.013 0H11.455a5.215 5.215 0 0 0 5.215 5.215h2.129v2.057A5.215 5.215 0 0 0 24 12.483V1.005A1.001 1.001 0 0 0 23.013 0Z" fill="currentColor"/></svg>
+                </div>
+                <div class="service-card-body">
+                  <div class="service-card-name">Jira</div>
+                  <div class="service-card-desc">Tickets as spec source</div>
+                </div>
+              </div>
+              <button type="button" class="connect-btn" id="connect-btn-jira" onclick="connectService('jira')">Connect →</button>
+            </div>
+
+            <div class="service-card" id="tile-linear">
+              <div class="service-card-top">
+                <div class="service-card-icon">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2.886 4.18A11.982 11.982 0 0 1 11.99 0C18.624 0 24 5.376 24 12.009c0 3.64-1.62 6.903-4.18 9.105L2.887 4.18ZM1.817 5.626l16.556 16.556c-.524.33-1.075.62-1.65.866L.951 7.277c.247-.575.537-1.126.866-1.65ZM.322 9.163l14.515 14.515c-.71.172-1.443.282-2.195.322L0 11.358a12 12 0 0 1 .322-2.195Zm-.17 4.862 9.823 9.824a12.02 12.02 0 0 1-9.824-9.824Z" fill="currentColor"/></svg>
+                </div>
+                <div class="service-card-body">
+                  <div class="service-card-name">Linear</div>
+                  <div class="service-card-desc">Issues as spec source</div>
+                </div>
+              </div>
+              <button type="button" class="connect-btn" id="connect-btn-linear" onclick="connectService('linear')">Connect →</button>
+            </div>
+
+          </div>
+
+          <div class="service-section-label">Communication</div>
+          <div class="service-grid">
+
+            <div class="service-card" id="tile-slack">
+              <div class="service-card-top">
+                <div class="service-card-icon">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zm2.521-10.123a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zm10.122 2.521a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.268 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zm-2.523 10.122a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.268a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z" fill="currentColor"/></svg>
+                </div>
+                <div class="service-card-body">
+                  <div class="service-card-name">Slack</div>
+                  <div class="service-card-desc">Discussion context</div>
+                </div>
+              </div>
+              <button type="button" class="connect-btn" id="connect-btn-slack" onclick="connectService('slack')">Connect →</button>
+              <!-- Channel picker — shown after Slack is connected -->
+              <div class="channel-picker" id="slack-channel-picker">
+                <div class="channel-search-wrap">
+                  <svg class="channel-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" id="slack-channel-search" class="channel-search-input" placeholder="Search channels…" autocomplete="off" spellcheck="false">
+                </div>
+                <div class="channel-status" id="slack-channel-status"></div>
+                <div class="channel-dropdown" id="slack-channel-dropdown"></div>
+                <div class="channel-chips" id="slack-channel-chips"></div>
+              </div>
+            </div>
+
+          </div><!-- /service-grid Communication -->
+
+          <div class="service-section-label">Spec documents <span class="label-required">· optional</span></div>
+          <div class="spec-docs-section">
+            <div class="dropzone" id="dropzone" onclick="document.getElementById('docs-input').click()"
+                 ondragover="event.preventDefault();this.classList.add('dragover')"
+                 ondragleave="this.classList.remove('dragover')"
+                 ondrop="onDocDrop(event)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Drop files here or click to browse</span>
+              <span class="dropzone-hint">.txt · .md · .pdf · .docx</span>
+            </div>
+            <div class="doc-chips" id="doc-chips"></div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Run the analysis -->
+    <div class="step-block step-locked" id="step2-block">
+      <div class="step-header">
+        <span class="step-num">2</span>
+        <div class="step-header-body">
+          <span class="step-title">Run the analysis</span>
+          <span class="step-lock-hint">Connect a repo first</span>
+        </div>
+      </div>
+
+      <!-- Advanced settings -->
+      <div class="advanced-details">
+        <div class="advanced-content">
+          <div class="advanced-section-label">AI model</div>
+          <div class="model-cards">
+            <div class="model-card active" onclick="selectModel(this, 'claude-code', 'claude-sonnet-4-6')">
+              <div class="model-card-icon">
+                <svg width="22" height="22" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="nonzero" transform="translate(1.407 1.407) scale(2.81)"><path d="M17.671 59.85l17.699-9.93.298-.862-.298-.48h-.862l-2.958-.182-10.113-.273-8.77-.364-8.497-.457-2.138-.456-2.004-2.642.207-1.318 1.798-1.209 2.575.225 5.691.389 8.54.589 6.195.364 9.177.954h1.458l.207-.589-.498-.364-.389-.364-8.837-5.989-9.566-6.329-5.011-3.644-2.709-1.846-1.367-1.731-.589-3.778 2.46-2.709 3.304.225.844.225 3.347 2.575 7.149 5.533 9.335 6.875 1.367 1.136.547-.389.067-.273-.613-1.026-5.078-9.177-5.418-9.335-2.411-3.869-.638-2.32C20.945 6.08 20.781 5.278 20.781 4.3l2.8-3.802L25.13 0l3.735.498 1.573 1.367 2.32 5.308 3.76 8.357 5.831 11.364 1.707 3.371.911 3.122.34.954h.589v-.547l.48-6.402.887-7.859L48.125 9.42l.298-2.849 1.409-3.413 2.8-1.846 2.187 1.045 1.798 2.575-.249 1.664-1.069 6.948-2.095 10.884-1.367 7.288h.796l.911-.911 3.687-4.895 6.195-7.744 2.733-3.073 3.189-3.395 2.047-1.616h3.869l2.849 4.233-1.275 4.373-3.984 5.053-3.304 4.282-4.737 6.377-2.958 5.102.273.407.705-.067 10.702-2.278 5.782-1.045 6.9-1.184 3.122 1.458.34 1.482-1.227 3.031-7.38 1.822-8.655 1.731-12.888 3.049-.158.115.182.225 5.806.547 2.484.134h6.08l11.321.844 2.958 1.956 1.774 2.393-.298 1.822-4.555 2.32-6.147-1.458-14.346-3.413-4.92-1.227h-.68v.407l4.1 4.009 7.513 6.784 9.408 8.746.48 2.162-1.209 1.707L78.044 75.8l-8.266-6.219-3.189-2.8-7.222-6.08h-.48v.638l1.664 2.436 8.789 13.21.456 4.051-.638 1.318-2.278.796-2.502-.456-5.144-7.222-5.308-8.133-4.282-7.288-.522.298-2.527 27.216-1.184 1.391L42.677 90l-2.278-1.731-1.209-2.8 1.209-5.533 1.458-7.222 1.184-5.74 1.069-7.131.638-2.369-.043-.158-.522.067-5.375 7.38-8.175 11.048-6.468 6.924-1.549.613-2.685-1.391.249-2.484 1.5-2.211 8.953-11.388 5.4-7.058 3.486-4.075-.024-.589h-.207L15.509 69.592l-4.233.547-1.822-1.707.225-2.8.862-.911 7.149-4.92-.024.024.005.025z" fill="#e4e4e7"/></g></svg>
+              </div>
+              <div class="model-card-name">Claude Code</div>
+              <span class="badge">recommended</span>
+              <div class="model-card-desc">Pro/Max subscription</div>
+            </div>
+            <div class="model-card" onclick="selectModel(this, 'ollama', 'qwen2.5-coder:7b')">
+              <div class="model-card-icon">
+                <svg width="22" height="22" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M168.64 23.253c4.608 1.814 8.768 4.8 12.544 8.747 6.293 6.528 11.605 15.872 15.659 26.944 4.074 11.136 6.72 23.467 7.722 35.84a107.824 107.824 0 0043.712-13.568l1.088-.085c18.56-1.494 36.907 1.856 52.907 10.112a103.091 103.091 0 016.336 3.626c1.067-12.138 3.669-24.192 7.68-35.072 4.053-11.093 9.365-20.416 15.637-26.965a35.628 35.628 0 0112.566-8.747c5.482-2.133 11.306-2.517 16.981-.896 8.555 2.432 15.893 7.851 21.675 15.723 5.29 7.19 9.258 16.405 11.968 27.456 4.906 19.925 5.76 46.144 2.453 77.76l1.131.853.554.406c16.15 12.288 27.392 29.802 33.344 50.133 9.28 31.723 4.608 67.307-11.392 87.211l-.384.448.043.064c8.896 16.256 14.293 33.429 15.445 51.2l.043.64c1.365 22.72-4.267 45.589-17.365 68.053l-.15.213.214.512c10.069 24.683 13.226 49.536 9.344 74.368l-.128.832a13.888 13.888 0 01-15.936 11.435 13.83 13.83 0 01-11.31-10.43 13.828 13.828 0 01-.21-5.399c3.562-22.038.213-44.139-10.24-66.624a13.713 13.713 0 011.853-13.163l.085-.128c12.886-19.712 18.219-39.04 17.067-58.027-.981-16.618-6.933-32.938-17.067-48.49a13.737 13.737 0 013.84-18.902l.192-.128c5.184-3.392 9.963-12.053 12.374-23.893a90.218 90.218 0 00-2.027-42.112c-4.373-14.933-12.373-27.392-23.573-35.904-12.694-9.685-29.504-14.357-50.774-13.013a13.93 13.93 0 01-13.482-7.915c-6.699-14.187-16.47-24.341-28.651-30.635a70.145 70.145 0 00-37.803-7.082c-26.56 2.112-49.984 17.088-56.96 35.968a13.91 13.91 0 01-13.013 9.066c-22.763.043-40.384 5.376-53.269 14.998-11.136 8.32-18.731 19.946-22.742 33.877a86.824 86.824 0 00-1.45 40.235c2.389 11.904 7.061 21.76 12.416 27.072l.17.149c4.523 4.416 5.483 11.307 2.326 16.747-7.68 13.269-13.419 33.045-14.358 52.053-1.066 21.717 3.968 40.576 15.339 54.101l.341.406a13.711 13.711 0 012.027 14.72c-12.288 26.368-16.064 48.042-11.989 65.109a13.91 13.91 0 01-27.072 6.357c-5.184-21.717-1.664-46.592 10.09-74.624l.299-.746-.17-.256a92.574 92.574 0 01-12.758-27.926l-.107-.405a122.965 122.965 0 01-3.776-38.08c.939-19.413 5.931-39.296 13.27-55.253l.256-.555-.043-.043c-6.25-8.917-10.88-20.33-13.44-32.96l-.107-.512a114.176 114.176 0 011.984-53.12c5.59-19.52 16.576-36.288 32.768-48.405 1.28-.96 2.624-1.92 3.968-2.816-3.392-31.851-2.538-58.24 2.39-78.293 2.709-11.051 6.698-20.267 11.989-27.456 5.76-7.851 13.099-13.27 21.653-15.723 5.675-1.621 11.52-1.259 17.003.896v.021zm87.808 193.92c19.968 0 38.4 6.678 52.181 18.24 13.44 11.243 21.44 26.347 21.44 41.387 0 18.944-8.661 33.707-24.17 43.136-13.227 8-30.955 11.883-51.264 11.883-21.526 0-39.915-5.526-53.184-15.659-13.163-10.027-20.544-24.107-20.544-39.36 0-15.083 8.49-30.229 22.528-41.515 14.25-11.456 33.066-18.112 53.013-18.112z" fill="#e4e4e7"/></svg>
+              </div>
+              <div class="model-card-name">Local (Ollama)</div>
+              <div class="model-card-desc">Free · private</div>
+            </div>
+            <div class="model-card" onclick="selectModel(this, 'claude', 'claude-sonnet-4-6')">
+              <div class="model-card-icon">
+                <svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.288 4.648H12.34l7.764 18.704h4.948L17.288 4.648zM2.948 23.352h4.948l1.71-4.124h6.354l-2.474-5.592H9.16l-6.212 9.716z" fill="#e4e4e7"/></svg>
+              </div>
+              <div class="model-card-name">Claude API</div>
+              <div class="model-card-desc">Best quality · API key</div>
+            </div>
+            <div class="model-card" onclick="selectModel(this, 'openai', 'gpt-4o')">
+              <div class="model-card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.998 5.998 0 0 0-3.998 2.9 6.042 6.042 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.516 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z" fill="#e4e4e7"/></svg>
+              </div>
+              <div class="model-card-name">OpenAI API</div>
+              <div class="model-card-desc">Good quality · API key</div>
+            </div>
+          </div>
+
+          <div id="api-key-field" style="display:none; flex-direction:column; gap:7px; margin-top:4px;">
+            <div class="field-label" id="api-key-label">API key</div>
+            <input type="password" id="api-key-input" placeholder="sk-..." autocomplete="off"/>
+          </div>
+
+          <div class="advanced-section-label" style="margin-top:16px;">Analysis window</div>
+          <div class="window-cards">
+            <div class="window-card" onclick="selectWindow(this, 30)">
+              <div class="window-card-value">30</div>
+              <div class="window-card-label">days</div>
+            </div>
+            <div class="window-card" onclick="selectWindow(this, 60)">
+              <div class="window-card-value">60</div>
+              <div class="window-card-label">days</div>
+            </div>
+            <div class="window-card active" onclick="selectWindow(this, 90)">
+              <div class="window-card-value">90</div>
+              <div class="window-card-label">days</div>
+            </div>
+            <div class="window-card" onclick="selectWindow(this, 180)">
+              <div class="window-card-value">6</div>
+              <div class="window-card-label">months</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="prefetch-estimate" class="prefetch-estimate" style="display:none"></div>
+
+      <button type="button" class="auto-analyse-btn" onclick="submitAuto()">Analyse repository →</button>
+      <div class="submit-note">Free · open source · takes ~2 minutes</div>
+    </div>
+
+    <!-- Hidden inputs for auto form -->
+    <input type="hidden" id="provider-input" value="claude-code"/>
+    <input type="hidden" id="model-input" value="claude-sonnet-4-6"/>
+    <input type="hidden" id="period-input" value="90"/>
+
+    <!-- Hidden file input for doc picker -->
+    <input type="file" id="docs-input" multiple accept=".txt,.md,.pdf,.docx" style="display:none" onchange="onDocPick(this.files)"/>
+
+    <!-- Hidden form — populated from localStorage on submit -->
+    <form method="POST" action="/analyze" id="auto-form" enctype="multipart/form-data" style="display:none">
+      <input type="hidden" name="repo_url"      id="af-repo"/>
+      <input type="hidden" name="github_token"  id="af-gh-token"/>
+      <input type="hidden" name="gitlab_token"  id="af-gl-token"/>
+      <input type="hidden" name="jira_url"           id="af-jira-url"/>
+      <input type="hidden" name="jira_email"         id="af-jira-email"/>
+      <input type="hidden" name="jira_token"         id="af-jira-token"/>
+      <input type="hidden" name="jira_refresh_token" id="af-jira-refresh-token"/>
+      <input type="hidden" name="linear_token"  id="af-linear-token"/>
+      <input type="hidden" name="slack_token"    id="af-slack-token"/>
+      <input type="hidden" name="slack_channels" id="af-slack-channels"/>
+      <input type="hidden" name="provider"      id="af-provider" value="claude-code"/>
+      <input type="hidden" name="model"         id="af-model" value="claude-sonnet-4-6"/>
+      <input type="hidden" name="api_key"       id="af-api-key"/>
+      <input type="hidden" name="period_days"   id="af-period" value="90"/>
+      <input type="file"   name="context_files" id="af-docs" multiple style="display:none"/>
+    </form>
+
+  </div><!-- /auto-panel -->
+
+  <!-- ── MANUAL MODE ────────────────────────────────────────────── -->
+  <form method="POST" action="/analyze" id="manual-panel" style="display:none">
+
+    <div class="field">
+      <div class="section-title">Step 1. Select repository</div>
+      <div class="provider-cards">
+        <div class="provider-card" id="card-github" onclick="selectProvider('github')">
+          <svg viewBox="0 0 98 96" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" fill="#fff"/></svg>
+          <div class="provider-card-name">GitHub</div>
+        </div>
+        <div class="provider-card" id="card-gitlab" onclick="selectProvider('gitlab')">
+          <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><path d="M126.615 64.266L99.19 1.324A5.403 5.403 0 0 0 94.074-1.7a5.403 5.403 0 0 0-5.6 3.837L77.05 38.96H50.95L39.527 2.137A5.403 5.403 0 0 0 33.927-1.7a5.4 5.4 0 0 0-5.117 3.024L1.385 64.266a3.79 3.79 0 0 0 1.384 4.508l61.23 44.498 61.23-44.498a3.79 3.79 0 0 0 1.385-4.508" fill="#e4e4e7"/></svg>
+          <div class="provider-card-name">GitLab</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="repo-section" id="repo-section">
+      <div class="field">
+        <div class="field-label">Repository URL</div>
+        <input type="url" name="repo_url" id="repo-url-input" placeholder="https://github.com/owner/repo" required autocomplete="off" spellcheck="false"/>
+      </div>
+
+      <details class="token-spoiler" id="github-token-section">
+        <summary>GitHub token (optional)</summary>
+        <div class="token-content">
+          <div class="token-row">
+            <input type="password" name="github_token" id="github-token-input" placeholder="ghp_..." autocomplete="off"/>
+            <a class="token-link" href="https://github.com/settings/tokens/new?description=1spur-scanner&scopes=public_repo,read:project" target="_blank">Create token →</a>
+          </div>
+          <div class="field-hint">Without a token: 60 req/hr, public repos only. With token: 5,000 req/hr. Private repos: use <code style="background:#1f1f23;padding:1px 5px;border-radius:4px;font-size:11px">repo</code> scope. Add <code style="background:#1f1f23;padding:1px 5px;border-radius:4px;font-size:11px">read:project</code> for GitHub Projects.</div>
+        </div>
+      </details>
+
+      <details class="token-spoiler" id="gitlab-token-section" style="display:none">
+        <summary>GitLab token (optional)</summary>
+        <div class="token-content">
+          <div class="token-row">
+            <input type="password" name="gitlab_token" id="gitlab-token-input" placeholder="glpat-..." autocomplete="off"/>
+            <a class="token-link" href="https://gitlab.com/-/user_settings/personal_access_tokens" target="_blank">Create token →</a>
+          </div>
+          <div class="field-hint">Without a token: very low rate limit, public projects only. With token: higher limits + private projects. Required scopes: <code style="background:#1f1f23;padding:1px 5px;border-radius:4px;font-size:11px">read_api</code>.</div>
+        </div>
+      </details>
+    </div>
+
+    <div class="field">
+      <div class="section-title">Step 2. Select AI model</div>
+      <div class="model-cards">
+        <div class="model-card active" onclick="selectModel(this, 'claude-code', 'claude-sonnet-4-6')">
+          <div class="model-card-icon">
+            <svg width="22" height="22" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="nonzero" transform="translate(1.407 1.407) scale(2.81)"><path d="M17.671 59.85l17.699-9.93.298-.862-.298-.48h-.862l-2.958-.182-10.113-.273-8.77-.364-8.497-.457-2.138-.456-2.004-2.642.207-1.318 1.798-1.209 2.575.225 5.691.389 8.54.589 6.195.364 9.177.954h1.458l.207-.589-.498-.364-.389-.364-8.837-5.989-9.566-6.329-5.011-3.644-2.709-1.846-1.367-1.731-.589-3.778 2.46-2.709 3.304.225.844.225 3.347 2.575 7.149 5.533 9.335 6.875 1.367 1.136.547-.389.067-.273-.613-1.026-5.078-9.177-5.418-9.335-2.411-3.869-.638-2.32C20.945 6.08 20.781 5.278 20.781 4.3l2.8-3.802L25.13 0l3.735.498 1.573 1.367 2.32 5.308 3.76 8.357 5.831 11.364 1.707 3.371.911 3.122.34.954h.589v-.547l.48-6.402.887-7.859L48.125 9.42l.298-2.849 1.409-3.413 2.8-1.846 2.187 1.045 1.798 2.575-.249 1.664-1.069 6.948-2.095 10.884-1.367 7.288h.796l.911-.911 3.687-4.895 6.195-7.744 2.733-3.073 3.189-3.395 2.047-1.616h3.869l2.849 4.233-1.275 4.373-3.984 5.053-3.304 4.282-4.737 6.377-2.958 5.102.273.407.705-.067 10.702-2.278 5.782-1.045 6.9-1.184 3.122 1.458.34 1.482-1.227 3.031-7.38 1.822-8.655 1.731-12.888 3.049-.158.115.182.225 5.806.547 2.484.134h6.08l11.321.844 2.958 1.956 1.774 2.393-.298 1.822-4.555 2.32-6.147-1.458-14.346-3.413-4.92-1.227h-.68v.407l4.1 4.009 7.513 6.784 9.408 8.746.48 2.162-1.209 1.707L78.044 75.8l-8.266-6.219-3.189-2.8-7.222-6.08h-.48v.638l1.664 2.436 8.789 13.21.456 4.051-.638 1.318-2.278.796-2.502-.456-5.144-7.222-5.308-8.133-4.282-7.288-.522.298-2.527 27.216-1.184 1.391L42.677 90l-2.278-1.731-1.209-2.8 1.209-5.533 1.458-7.222 1.184-5.74 1.069-7.131.638-2.369-.043-.158-.522.067-5.375 7.38-8.175 11.048-6.468 6.924-1.549.613-2.685-1.391.249-2.484 1.5-2.211 8.953-11.388 5.4-7.058 3.486-4.075-.024-.589h-.207L15.509 69.592l-4.233.547-1.822-1.707.225-2.8.862-.911 7.149-4.92-.024.024.005.025z" fill="#e4e4e7"/></g></svg>
+          </div>
+          <div class="model-card-name">Claude Code</div>
+          <span class="badge">recommended</span>
+          <div class="model-card-desc">Pro/Max subscription</div>
+        </div>
+        <div class="model-card" onclick="selectModel(this, 'ollama', 'llama3.2:3b')">
+          <div class="model-card-icon">
+            <svg width="22" height="22" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M168.64 23.253c4.608 1.814 8.768 4.8 12.544 8.747 6.293 6.528 11.605 15.872 15.659 26.944 4.074 11.136 6.72 23.467 7.722 35.84a107.824 107.824 0 0043.712-13.568l1.088-.085c18.56-1.494 36.907 1.856 52.907 10.112a103.091 103.091 0 016.336 3.626c1.067-12.138 3.669-24.192 7.68-35.072 4.053-11.093 9.365-20.416 15.637-26.965a35.628 35.628 0 0112.566-8.747c5.482-2.133 11.306-2.517 16.981-.896 8.555 2.432 15.893 7.851 21.675 15.723 5.29 7.19 9.258 16.405 11.968 27.456 4.906 19.925 5.76 46.144 2.453 77.76l1.131.853.554.406c16.15 12.288 27.392 29.802 33.344 50.133 9.28 31.723 4.608 67.307-11.392 87.211l-.384.448.043.064c8.896 16.256 14.293 33.429 15.445 51.2l.043.64c1.365 22.72-4.267 45.589-17.365 68.053l-.15.213.214.512c10.069 24.683 13.226 49.536 9.344 74.368l-.128.832a13.888 13.888 0 01-15.936 11.435 13.83 13.83 0 01-11.31-10.43 13.828 13.828 0 01-.21-5.399c3.562-22.038.213-44.139-10.24-66.624a13.713 13.713 0 011.853-13.163l.085-.128c12.886-19.712 18.219-39.04 17.067-58.027-.981-16.618-6.933-32.938-17.067-48.49a13.737 13.737 0 013.84-18.902l.192-.128c5.184-3.392 9.963-12.053 12.374-23.893a90.218 90.218 0 00-2.027-42.112c-4.373-14.933-12.373-27.392-23.573-35.904-12.694-9.685-29.504-14.357-50.774-13.013a13.93 13.93 0 01-13.482-7.915c-6.699-14.187-16.47-24.341-28.651-30.635a70.145 70.145 0 00-37.803-7.082c-26.56 2.112-49.984 17.088-56.96 35.968a13.91 13.91 0 01-13.013 9.066c-22.763.043-40.384 5.376-53.269 14.998-11.136 8.32-18.731 19.946-22.742 33.877a86.824 86.824 0 00-1.45 40.235c2.389 11.904 7.061 21.76 12.416 27.072l.17.149c4.523 4.416 5.483 11.307 2.326 16.747-7.68 13.269-13.419 33.045-14.358 52.053-1.066 21.717 3.968 40.576 15.339 54.101l.341.406a13.711 13.711 0 012.027 14.72c-12.288 26.368-16.064 48.042-11.989 65.109a13.91 13.91 0 01-27.072 6.357c-5.184-21.717-1.664-46.592 10.09-74.624l.299-.746-.17-.256a92.574 92.574 0 01-12.758-27.926l-.107-.405a122.965 122.965 0 01-3.776-38.08c.939-19.413 5.931-39.296 13.27-55.253l.256-.555-.043-.043c-6.25-8.917-10.88-20.33-13.44-32.96l-.107-.512a114.176 114.176 0 011.984-53.12c5.59-19.52 16.576-36.288 32.768-48.405 1.28-.96 2.624-1.92 3.968-2.816-3.392-31.851-2.538-58.24 2.39-78.293 2.709-11.051 6.698-20.267 11.989-27.456 5.76-7.851 13.099-13.27 21.653-15.723 5.675-1.621 11.52-1.259 17.003.896v.021zm87.808 193.92c19.968 0 38.4 6.678 52.181 18.24 13.44 11.243 21.44 26.347 21.44 41.387 0 18.944-8.661 33.707-24.17 43.136-13.227 8-30.955 11.883-51.264 11.883-21.526 0-39.915-5.526-53.184-15.659-13.163-10.027-20.544-24.107-20.544-39.36 0-15.083 8.49-30.229 22.528-41.515 14.25-11.456 33.066-18.112 53.013-18.112z" fill="#e4e4e7"/></svg>
+          </div>
+          <div class="model-card-name">Local (Ollama)</div>
+          <div class="model-card-desc">Free · private</div>
+        </div>
+        <div class="model-card" onclick="selectModel(this, 'claude', 'claude-sonnet-4-6')">
+          <div class="model-card-icon">
+            <svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.288 4.648H12.34l7.764 18.704h4.948L17.288 4.648zM2.948 23.352h4.948l1.71-4.124h6.354l-2.474-5.592H9.16l-6.212 9.716z" fill="#e4e4e7"/></svg>
+          </div>
+          <div class="model-card-name">Claude API</div>
+          <div class="model-card-desc">Best quality · API key</div>
+        </div>
+        <div class="model-card" onclick="selectModel(this, 'openai', 'gpt-4o')">
+          <div class="model-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.998 5.998 0 0 0-3.998 2.9 6.042 6.042 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.516 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z" fill="#e4e4e7"/></svg>
+          </div>
+          <div class="model-card-name">OpenAI API</div>
+          <div class="model-card-desc">Good quality · API key</div>
+        </div>
+      </div>
+      <input type="hidden" name="provider" id="provider-input-m" value="claude-code"/>
+      <input type="hidden" name="model" id="model-input-m" value="claude-sonnet-4-6"/>
+    </div>
+
+    <div class="field" id="api-key-field-m" style="display:none">
+      <div class="field-label" id="api-key-label-m">API key</div>
+      <input type="password" name="api_key" id="api-key-input-m" placeholder="sk-..." autocomplete="off"/>
+    </div>
+
+    <div class="field">
+      <div class="section-title">Step 3. Analysis window</div>
+      <div class="window-cards">
+        <div class="window-card" onclick="selectWindow(this, 30)">
+          <div class="window-card-value">30</div>
+          <div class="window-card-label">days</div>
+        </div>
+        <div class="window-card" onclick="selectWindow(this, 60)">
+          <div class="window-card-value">60</div>
+          <div class="window-card-label">days</div>
+        </div>
+        <div class="window-card active" onclick="selectWindow(this, 90)">
+          <div class="window-card-value">90</div>
+          <div class="window-card-label">days</div>
+        </div>
+        <div class="window-card" onclick="selectWindow(this, 180)">
+          <div class="window-card-value">6</div>
+          <div class="window-card-label">months</div>
+        </div>
+      </div>
+      <input type="hidden" name="period_days" id="period-input-m" value="90"/>
+    </div>
+
+    <details class="token-spoiler">
+      <summary>Jira integration (optional)</summary>
+      <div class="token-content" style="gap:12px">
+        <div class="field-hint">Connect Jira to enrich analysis with ticket specs and acceptance criteria.</div>
+        <div class="field">
+          <div class="field-label">Jira URL</div>
+          <input type="url" name="jira_url" id="jira-url-input" placeholder="https://yourcompany.atlassian.net" autocomplete="off" spellcheck="false"/>
+        </div>
+        <div class="field">
+          <div class="field-label">Jira email</div>
+          <input type="email" name="jira_email" id="jira-email-input" placeholder="you@company.com" autocomplete="off"/>
+        </div>
+        <div class="field">
+          <div class="field-label">Jira API token</div>
+          <div class="token-row">
+            <input type="password" name="jira_token" id="jira-token-input" placeholder="ATATT..." autocomplete="off"/>
+            <a class="token-link" href="https://id.atlassian.com/manage-profile/security/api-tokens" target="_blank">Create token →</a>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="token-spoiler">
+      <summary>Linear integration (optional)</summary>
+      <div class="token-content" style="gap:12px">
+        <div class="field-hint">Connect Linear to enrich analysis with issue descriptions and acceptance criteria.</div>
+        <div class="field">
+          <div class="field-label">Linear API key</div>
+          <div class="token-row">
+            <input type="password" name="linear_token" id="linear-token-input" placeholder="lin_api_..." autocomplete="off"/>
+            <a class="token-link" href="https://linear.app/settings/api" target="_blank">Create key →</a>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="token-spoiler">
+      <summary>Slack integration (optional)</summary>
+      <div class="token-content" style="gap:12px">
+        <div class="field-hint">Connect Slack to enrich analysis with team discussions. Requires a User OAuth token (<code style="background:#1f1f23;padding:1px 5px;border-radius:4px;font-size:11px">xoxp-...</code>).</div>
+        <div class="field">
+          <div class="field-label">Slack User OAuth token</div>
+          <div class="token-row">
+            <input type="password" name="slack_token" id="slack-token-input" placeholder="xoxp-..." autocomplete="off"/>
+            <a class="token-link" href="https://api.slack.com/apps" target="_blank">Create token →</a>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Channels to scan (optional)</div>
+          <input type="text" name="slack_channels" id="slack-channels-input" placeholder="#engineering, #testing" autocomplete="off" spellcheck="false"/>
+        </div>
+      </div>
+    </details>
+
+    <div id="prefetch-estimate-manual" class="prefetch-estimate" style="display:none"></div>
+
+    <button type="submit" class="submit">Analyse repository →</button>
+    <div class="submit-note">Free · open source · takes ~2 minutes</div>
+
+  </form>
+
+</div>
+<script src="/static/index.js?v=18"></script>
+</body>
+</html>

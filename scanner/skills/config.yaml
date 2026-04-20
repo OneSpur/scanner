@@ -1,0 +1,117 @@
+# ── Noise filter ──────────────────────────────────────────────────────────────
+# Issues matching these title patterns are skipped entirely (no LLM call).
+# Patterns are matched case-insensitively against the start of the issue title.
+noise:
+  title_patterns:
+    - '^ci\s*:'
+    - '^chore\s*:'
+    - '^build\s*:'
+    - '^bump\s'
+    - '^update\s+(dep|package|version)'
+    - 'renovate'
+    - 'dependabot'
+    - 'add\s+(explicit\s+)?timeout'
+    - 'fix\s+typo'
+    - 'spelling'
+    - '^lint\s'
+    - '^format\s'
+    - 'add\s+missing\s+(import|type)'
+    - 'remove\s+unused'
+    - 'cleanup'
+    - 'clean[\s_-]up'
+
+  # Issues whose labels are ALL in this set are skipped.
+  labels:
+    - dependencies
+    - ci
+    - chore
+    - documentation
+    - maintenance
+    - infrastructure
+
+
+# ── Intent grading ────────────────────────────────────────────────────────────
+# Determines how deeply an issue is analysed.
+# Score >= rich_threshold  → full analysis (up to 4 requirements extracted)
+# Score >= medium_threshold → simplified analysis (up to 2 requirements)
+# Score <  medium_threshold → skipped entirely
+intent_grading:
+  rich_threshold: 4
+  medium_threshold: 2
+
+  scoring:
+    # +1 if the issue body is longer than this many characters
+    min_body_length: 100
+    min_body_length_score: 1
+
+    # +2 if the body contains a bullet list or checkbox
+    has_structure_score: 2
+
+    # +1 if the body contains requirement keywords
+    has_requirement_keywords_score: 1
+    requirement_keywords:
+      - should
+      - must
+      - shall
+      - needs? to
+      - required
+      - expect
+
+    # +1 if the issue has a relevant label
+    has_relevant_label_score: 1
+    relevant_labels:
+      - feature
+      - bug
+      - enhancement
+      - spec
+
+    # +1 if the issue has at least one comment
+    has_comments_score: 1
+
+
+# ── False-link guard ──────────────────────────────────────────────────────────
+# When ALL findings for an issue-PR pair are "gap" and the PR body does not
+# mention the issue number, we check if the titles share a meaningful topic word.
+# Words in this list are ignored when comparing titles.
+false_link_stopwords:
+  - docs
+  - test
+  - tests
+  - fix
+  - fixes
+  - fixed
+  - add
+  - adds
+  - added
+  - update
+  - updates
+  - change
+  - changes
+  - improve
+  - feature
+  - with
+  - from
+  - when
+  - that
+  - this
+  - have
+  - will
+  - also
+  - more
+  - first
+  - version
+  - support
+  - using
+  - allow
+  - make
+  - page
+  - admin
+  - error
+  - issue
+  - into
+  - file
+  - code
+  - item
+  - list
+  - block
+  - form

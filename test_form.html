@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Form Submission</title>
+</head>
+<body>
+    <h1>Test Form Submission</h1>
+    <form method="POST" action="http://localhost:7433/analyze" id="test-form">
+        <input type="text" name="repo_url" value="https://github.com/django/django" required>
+        <input type="hidden" name="provider" value="claude-code">
+        <input type="hidden" name="model" value="claude-sonnet-4-6">
+        <input type="hidden" name="period_days" value="90">
+        <button type="submit">Test Submit</button>
+    </form>
+    
+    <script>
+        document.getElementById('test-form').addEventListener('submit', function(e) {
+            console.log('Form submitting...');
+            console.log('Action:', this.action);
+            console.log('Method:', this.method);
+        });
+    </script>
+</body>
+</html>
