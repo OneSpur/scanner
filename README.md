@@ -143,8 +143,6 @@ For Claude Code (Pro/Max), a typical 10-pair scan costs well within the daily us
 
 [Spur AI](https://1spur.com) does this continuously: monitoring every commit, alerting your team the moment specs diverge, and turning your issue tracker into a live source of truth. No one-time scan. No manual re-runs. Just always-on visibility into the gap between what was planned and what was shipped.
 
-**[1spur.com](https://1spur.com)**
-
 <div align="center">
 
 MIT License · Built by [Spur AI](https://1spur.com)
