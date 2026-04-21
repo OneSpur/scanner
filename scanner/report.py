@@ -697,7 +697,7 @@ def generate_report(repo_data: dict, analysis: dict) -> str:
 <body>
 
 <div class="no-print" style="border-bottom:1px solid #18181b;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#09090b;z-index:10;">
-  <div style="font-size:16px;font-weight:800;letter-spacing:-0.3px;">Spec<span style="color:#6366f1">Drift</span> <a href="https://1spur.com" target="_blank" style="font-weight:300;color:#3f3f46;font-size:9px;letter-spacing:0.3px;text-decoration:none;">by 1spur AI</a></div>
+  <div style="font-size:16px;font-weight:800;letter-spacing:-0.3px;"><a href="https://1spur.com" target="_blank" style="font-weight:800;color:inherit;text-decoration:none;">1Spur</a> Scanner <a href="https://1spur.com" target="_blank" style="font-weight:300;color:#3f3f46;font-size:9px;letter-spacing:0.3px;text-decoration:none;">by 1spur AI</a></div>
   <div style="display:flex;gap:10px;align-items:center;">
     <span style="font-size:12px;color:#3f3f46">{scan_date}</span>
     <button onclick="window.print()" style="background:#18181b;border:1px solid #27272a;color:#a1a1aa;font-size:12px;padding:6px 14px;border-radius:8px;cursor:pointer;">Save PDF</button>
