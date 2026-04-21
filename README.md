@@ -15,7 +15,7 @@ An AI scanner that reviews code through the eyes of a PM and System Architect:
 - It finds deviations of code from system design, tasks, docs.
 - Offers to generate code / text for detected discrepancies.
 
-![1Spur Scanner demo](scanner/static/scanner_demo.gif)
+![Report preview](scanner/static/report-preview.png)
 
 ## Why 1Spur Scanner?
 The goal of 1Spur is to prevent tech debt from accumulating, reduce the number of code rewrites, and hit business expectations more accurately:
@@ -23,6 +23,8 @@ The goal of 1Spur is to prevent tech debt from accumulating, reduce the number o
 - looks at code through the eyes of the business, reporting errors that are usually only noticed at demo or in production
 
 1Spur Scanner is a proof-of-concept of a **[Sync Engine for everything your team ships](https://1spur.app)**.
+
+![1Spur Scanner demo](scanner/static/scanner_demo.gif)
 
 ## Quickstart
 
