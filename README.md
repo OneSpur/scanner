@@ -1,19 +1,21 @@
 <div align="center">
 
+<img src="scanner/static/icon.svg" width="72" height="72" alt="1Spur Scanner" />
+
+# 1Spur Scanner
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-222?style=flat-square)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-3776ab?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![Claude](https://img.shields.io/badge/AI-Claude%20%7C%20OpenAI%20%7C%20Ollama-7c3aed?style=flat-square)](https://anthropic.com)
 [![Spur AI](https://img.shields.io/badge/by-Spur%20AI-0ea5e9?style=flat-square)](https://1spur.com)
-<img src="scanner/static/icon.svg" width="72" height="72" alt="1Spur Scanner" />
 
-# 1Spur Scanner
+</div>
 
 An AI scanner that reviews code through the eyes of a PM and System Architect:
 - It finds deviations of code from system design, tasks, docs.
 - Offers to generate code / text for detected discrepancies.
 
-*Report_screenshot / video*  
-*report_example.pdf*
+![1Spur Scanner demo](scanner/static/scanner_demo.gif)
 
 ## Why 1Spur Scanner?
 The goal of 1Spur is to prevent tech debt from accumulating, reduce the number of code rewrites, and hit business expectations more accurately:
@@ -140,5 +142,3 @@ For Claude Code (Pro/Max), a typical 10-pair scan costs well within the daily us
 ## Contribution
 
 If you'd like to contribute your own example or fix a bug please make sure to take a look at **[CONTRIBUTING.md](https://github.com/OneSpur/scanner/blob/main/CONTRIBUTING.md)**
-
-</div>
