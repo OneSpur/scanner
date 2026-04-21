@@ -1,21 +1,26 @@
 <div align="center">
 
-<img src="scanner/static/icon.svg" width="72" height="72" alt="1Spur Scanner" />
-
-<h1>1Spur Scanner</h1>
-
-<p><strong>Find out how far your code has drifted from its original specs.</strong></p>
-
-<p>An open-source tool by <a href="https://1spur.com"><strong>Spur AI</strong></a></p>
-
 [![License: MIT](https://img.shields.io/badge/license-MIT-222?style=flat-square)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-3776ab?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![Claude](https://img.shields.io/badge/AI-Claude%20%7C%20OpenAI%20%7C%20Ollama-7c3aed?style=flat-square)](https://anthropic.com)
 [![Spur AI](https://img.shields.io/badge/by-Spur%20AI-0ea5e9?style=flat-square)](https://1spur.com)
+<img src="scanner/static/icon.svg" width="72" height="72" alt="1Spur Scanner" />
 
-Paste a GitHub repo URL. Get a report showing rework patterns, unimplemented issues, and unlinked PRs with AI-written analysis explaining what it means and what it's costing your team.
+# 1Spur Scanner
 
-</div>
+An AI scanner that reviews code through the eyes of a PM and System Architect:
+- It finds deviations of code from system design, tasks, docs.
+- Offers to generate code / text for detected discrepancies.
+
+*Report_screenshot / video*  
+*report_example.pdf*
+
+## Why 1Spur Scanner?
+The goal of 1Spur is to prevent tech debt from accumulating, reduce the number of code rewrites, and hit business expectations more accurately:
+- finds bugs based on context from Jira/Linear/Slack that other scanners and code review helpers miss
+- looks at code through the eyes of the business, reporting errors that are usually only noticed at demo or in production
+
+1Spur Scanner is a proof-of-concept of a **[Sync Engine for everything your team ships](https://1spur.app)**.
 
 ## Quickstart
 
@@ -108,43 +113,32 @@ Without a token you get 60 API requests/hour. Enough for small repos, but large 
 
 Create one at **[github.com/settings/tokens](https://github.com/settings/tokens/new?description=1spur-scanner)**:
 
-| Repo type | Required scope |
-|---|---|
-| Public | `public_repo` |
-| Private | `repo` |
-| GitHub Projects | add `read:project` |
+
+| Repo type       | Required scope    |
+| --------------- | ----------------- |
+| Public          | `public_repo`     |
+| Private         | `repo`            |
+| GitHub Projects | add`read:project` |
 
 ## Token usage
 
 1Spur Scanner batches 2 issue-PR pairs per LLM call. Typical token consumption per scan:
 
+
 | Pairs analysed | LLM calls | Tokens (approx) |
-|---|---|---|
-| 5 pairs | 4 | ~10,000 |
-| 10 pairs | 6 | ~17,000 |
-| 20 pairs | 11 | ~32,000 |
-| 30 pairs | 16 | ~48,000 |
+| -------------- | --------- | --------------- |
+| 5 pairs        | 4         | ~10,000         |
+| 10 pairs       | 6         | ~17,000         |
+| 20 pairs       | 11        | ~32,000         |
+| 30 pairs       | 16        | ~48,000         |
 
 Each batch call uses ~3,200 tokens (system + 2 issue/diff pairs + output). One summary call adds ~700 tokens.
 
 For Claude Code (Pro/Max), a typical 10-pair scan costs well within the daily usage allowance.
 
-## About Spur AI
 
-<div align="center">
+## Contribution
 
-<img src="scanner/static/icon.svg" width="48" height="48" alt="Spur AI" />
-
-**1Spur Scanner is the open-source diagnostic. [Spur AI](https://1spur.com) is what comes next.**
-
-</div>
-
-1Spur Scanner gives you a one-time snapshot: run it on a repo, see where specs and code diverged, understand what it cost. That's the starting point.
-
-[Spur AI](https://1spur.com) does this continuously: monitoring every commit, alerting your team the moment specs diverge, and turning your issue tracker into a live source of truth. No one-time scan. No manual re-runs. Just always-on visibility into the gap between what was planned and what was shipped.
-
-<div align="center">
-
-MIT License · Built by [Spur AI](https://1spur.com)
+If you'd like to contribute your own example or fix a bug please make sure to take a look at **[CONTRIBUTING.md](https://github.com/OneSpur/scanner/blob/main/CONTRIBUTING.md)**
 
 </div>
